@@ -18,6 +18,17 @@ let shutter: UIButton = {
     return button
 }()
 
+//let recordButton: UIButton = {
+//    let size = 50
+//    let button = UIButton(frame: CGRect(x: 0, y: 0, width: size, height: size))
+//    button.layer.cornerRadius = CGFloat(size / 2)
+//    button.layer.backgroundColor = UIColor.red.cgColor
+//    button.contentMode = .scaleAspectFill
+//    button.layer.borderWidth = 5
+//    button.layer.borderColor = UIColor.black.cgColor
+//    return button
+//}()
+
 let previewImage: UIImageView = {
     let size = 75
     let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: size, height: size))

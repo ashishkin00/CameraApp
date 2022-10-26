@@ -14,7 +14,9 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     private var backInput : AVCaptureInput!
     private var frontCamera : AVCaptureDevice!
     private var frontInput : AVCaptureInput!
+    private let movieOutput = AVCaptureMovieFileOutput()
     private lazy var currentCameraPosition: CameraPosition = .back
+    private var outputURL: URL!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +40,57 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         captureSession.commitConfiguration()
         cameraSwitcher.isUserInteractionEnabled = true
     }
+    
+    func tempURL() -> URL? {
+        let directory = NSTemporaryDirectory() as NSString
+        
+        if directory != "" {
+            let path = directory.appendingPathComponent(NSUUID().uuidString + ".mp4")
+            return URL(fileURLWithPath: path)
+        }
+        
+        return nil
+    }
+    
+//    @objc func startRecording() {
+//        if movieOutput.isRecording == false {
+//            let connection = movieOutput.connection(with: .video)
+//            if (connection?.isVideoOrientationSupported)! {
+//                connection?.videoOrientation = .landscapeLeft
+//            }
+//            if (connection?.isVideoStabilizationSupported)! {
+//                connection?.preferredVideoStabilizationMode = AVCaptureVideoStabilizationMode.auto
+//            }
+//            if (frontCamera.isSmoothAutoFocusSupported) {
+//                do {
+//                    try frontCamera.lockForConfiguration()
+//                    frontCamera.isSmoothAutoFocusEnabled = false
+//                    frontCamera.unlockForConfiguration()
+//                } catch {
+//                    print("Error setting configuration: \(error)")
+//                }
+//            }
+//            outputURL = tempURL()
+//            movieOutput.startRecording(to: outputURL, recordingDelegate: self)
+//        }
+//        else {
+//            stopRecording()
+//        }
+//    }
+//
+//    func stopRecording() {
+//        if movieOutput.isRecording == true {
+//            movieOutput.stopRecording()
+//        }
+//    }
+//    func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
+//        if (error != nil) {
+//            print("Error recording movie: \(error!.localizedDescription)")
+//        } else {
+//            let videoRecorded = outputURL! as URL
+//            performSegue(withIdentifier: "showVideo", sender: videoRecorded)
+//        }
+//    }
     
     @objc func rotate() {
         let device = UIDevice.current
@@ -111,6 +164,16 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
                 print("Caught an exception while creating capture device: \(error)")
             }
         }
+//        if let microphone = AVCaptureDevice.default(for: .audio) {
+//            do {
+//                let micInput = try AVCaptureDeviceInput(device: microphone)
+//                if captureSession.canAddInput(micInput) {
+//                    captureSession.addInput(micInput)
+//                }
+//            } catch let error {
+//                print("Error setting device audio input: \(error)")
+//            }
+//        }
         if let captureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front) {
             frontCamera = captureDevice
             do {
@@ -122,9 +185,11 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
                 print("Caught an exception while creating capture device: \(error)")
             }
         }
-        
         if captureSession.canAddOutput(photoOutput) {
             captureSession.addOutput(photoOutput)
+        }
+        if captureSession.canAddOutput(movieOutput) {
+             captureSession.addOutput(movieOutput)
         }
         let cameraLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         cameraLayer.frame = self.view.frame
@@ -156,39 +221,56 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         view.addSubview(previewImage)
         view.addSubview(cameraSwitcher)
         view.addSubview(torch)
-        shutter.addTarget(self, action: #selector(takePhoto), for: .touchUpInside)
+//        view.addSubview(recordButton)
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(openGallery))
         let tapGestureSwitcher = UITapGestureRecognizer(target: self, action: #selector(switchCamera))
         let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(didPinch(_:)))
-        view.addGestureRecognizer(pinchGesture)
-        previewImage.isUserInteractionEnabled = true
-        previewImage.addGestureRecognizer(tapGesture)
+        
+        shutter.addTarget(self, action: #selector(takePhoto), for: .touchUpInside)
         torch.addTarget(self, action: #selector(setNextFlashMode), for: .touchUpInside)
+//        recordButton.addTarget(self, action: #selector(startRecording), for: .touchUpInside)
+        
         shutter.translatesAutoresizingMaskIntoConstraints = false
         previewImage.translatesAutoresizingMaskIntoConstraints = false
         torch.translatesAutoresizingMaskIntoConstraints = false
         cameraSwitcher.translatesAutoresizingMaskIntoConstraints = false
+//        recordButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        previewImage.isUserInteractionEnabled = true
         cameraSwitcher.isUserInteractionEnabled = true
+        previewImage.addGestureRecognizer(tapGesture)
         cameraSwitcher.addGestureRecognizer(tapGestureSwitcher)
+        view.addGestureRecognizer(pinchGesture)
+        
+        torch.setBackgroundImage(UIImage(systemName: flashMode.rawValue), for: .normal)
+        
         NSLayoutConstraint.activate([
             shutter.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             shutter.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -25),
             shutter.heightAnchor.constraint(equalToConstant: 100),
             shutter.widthAnchor.constraint(equalToConstant: 100),
+            
             previewImage.centerYAnchor.constraint(equalTo: shutter.centerYAnchor),
             previewImage.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -25),
             previewImage.heightAnchor.constraint(equalToConstant: 75),
             previewImage.widthAnchor.constraint(equalToConstant: 75),
+            
             torch.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             torch.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             torch.widthAnchor.constraint(equalToConstant: 35),
             torch.heightAnchor.constraint(equalToConstant: 35),
+            
             cameraSwitcher.centerYAnchor.constraint(equalTo: shutter.centerYAnchor),
             cameraSwitcher.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 25),
             cameraSwitcher.heightAnchor.constraint(equalToConstant: 75),
             cameraSwitcher.widthAnchor.constraint(equalToConstant: 75),
+            
+//            recordButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+//            recordButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -150),
+//            recordButton.heightAnchor.constraint(equalToConstant: 50),
+//            recordButton.widthAnchor.constraint(equalToConstant: 50),
         ])
-        torch.setBackgroundImage(UIImage(systemName: flashMode.rawValue), for: .normal)
     }
     
     @objc func openGallery() {

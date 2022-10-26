@@ -1,10 +1,3 @@
-//
-//  SceneDelegate.swift
-//  CameraApp
-//
-//  Created by dunice-1 on 25.10.2022.
-//
-
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {

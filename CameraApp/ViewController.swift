@@ -278,6 +278,7 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     }
     
     func getLastPhotoFromGallery() {
+        print("working")
         let fetchOptions = PHFetchOptions()
         fetchOptions.fetchLimit = 1
         fetchOptions.sortDescriptors = [NSSortDescriptor(key:"creationDate", ascending: false)]
@@ -287,6 +288,7 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             requestOptions.isSynchronous = true
             PHImageManager.default().requestImage(for: fetchResult.firstObject! as PHAsset, targetSize: CGSize(width: 256, height: 256), contentMode: PHImageContentMode.aspectFill, options: requestOptions, resultHandler: { (image, _) in
                 if let image = image {
+                    
                     previewImage.image = image
                 }
             })
@@ -336,7 +338,6 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             @unknown default:
                 break
         }
-        
         previewImage.image = image
         savePhoto()
     }

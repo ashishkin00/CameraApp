@@ -11,7 +11,11 @@ let shutter: UIButton = {
     let size = 100
     let button = UIButton(frame: CGRect(x: 0, y: 0, width: size, height: size))
     button.layer.cornerRadius = CGFloat(size / 2)
-    button.layer.backgroundColor = UIColor.systemGray5.cgColor
+    if #available(iOS 15.5, *) {
+        button.layer.backgroundColor = UIColor.systemGray5.cgColor
+    } else {
+        button.layer.backgroundColor = UIColor.white.cgColor
+    }
     button.contentMode = .scaleAspectFill
     button.layer.borderWidth = 2
     button.layer.borderColor = UIColor.white.cgColor

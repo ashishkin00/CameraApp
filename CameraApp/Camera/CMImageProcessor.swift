@@ -3,7 +3,17 @@ import AVFoundation
 import Photos
 import PhotosUI
 
-extension CameraManager: AVCapturePhotoCaptureDelegate {
+extension CameraManager: AVCapturePhotoCaptureDelegate, AVCaptureFileOutputRecordingDelegate {
+    func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
+        print("asd")
+        if error == nil {
+            print(output)
+            //do something
+        } else {
+            //do something
+        }
+    }
+    
     @objc func takePhoto() {
         let photoSettings = AVCapturePhotoSettings()
         switch self.flashMode {
@@ -18,6 +28,21 @@ extension CameraManager: AVCapturePhotoCaptureDelegate {
             photoSettings.previewPhotoFormat = [kCVPixelBufferPixelFormatTypeKey as String: photoPreviewType]
             self.photoOutput.capturePhoto(with: photoSettings, delegate: self)
         }
+    }
+    
+    @objc func recordVideo() {
+        print("recording")
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let fileUrl = paths[0].appendingPathComponent("output.mp4")
+        try? FileManager.default.removeItem(at: fileUrl)
+        videoOutput.startRecording(to: fileUrl, recordingDelegate: self)
+    }
+    
+    func stopRecording() {
+        if !session.isRunning {
+            return
+        }
+        videoOutput.stopRecording()
     }
     
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {

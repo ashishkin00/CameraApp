@@ -6,6 +6,7 @@ import PhotosUI
 class CameraManager: NSObject {
     let session = AVCaptureSession()
     let photoOutput = AVCapturePhotoOutput()
+    let videoOutput = AVCaptureMovieFileOutput()
     var currentFrontInput: AVCaptureDeviceInput!
     var currentBackInput: AVCaptureDeviceInput!
     lazy var frontInputs: [AVCaptureDeviceInput] = []
@@ -70,6 +71,9 @@ class CameraManager: NSObject {
         session.addInput(currentBackInput)
         if session.canAddOutput(photoOutput) {
             session.addOutput(photoOutput)
+        }
+        if session.canAddOutput(videoOutput) {
+            session.addOutput(videoOutput)
         }
         previewLayer = AVCaptureVideoPreviewLayer(session: session)
         session.commitConfiguration()

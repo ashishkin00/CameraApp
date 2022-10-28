@@ -14,6 +14,17 @@ class CameraUI: UIView, CameraUIDelegate {
         return button
     }()
     
+    let recordButton: UIButton = {
+        let size = 50
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: size, height: size))
+        button.layer.cornerRadius = CGFloat(size / 2)
+        button.layer.backgroundColor = UIColor.red.cgColor
+        button.contentMode = .scaleAspectFill
+        button.layer.borderWidth = 15
+        button.layer.borderColor = UIColor.darkGray.cgColor
+        return button
+    }()
+    
     let shutterButton: UIButton = {
         let size = 100
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: size, height: size))
@@ -81,6 +92,9 @@ class CameraUI: UIView, CameraUIDelegate {
         addSubview(moduleSwitchButton)
         moduleSwitchButton.translatesAutoresizingMaskIntoConstraints = false
         
+        addSubview(recordButton)
+        recordButton.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             shutterButton.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
             shutterButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -25),
@@ -106,6 +120,11 @@ class CameraUI: UIView, CameraUIDelegate {
             moduleSwitchButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -25),
             moduleSwitchButton.heightAnchor.constraint(equalToConstant: 35),
             moduleSwitchButton.widthAnchor.constraint(equalToConstant: 35),
+            
+            recordButton.bottomAnchor.constraint(equalTo: shutterButton.bottomAnchor),
+            recordButton.leadingAnchor.constraint(equalTo: shutterButton.trailingAnchor),
+            recordButton.heightAnchor.constraint(equalToConstant: 50),
+            recordButton.widthAnchor.constraint(equalToConstant: 50),
         ])
     }
     

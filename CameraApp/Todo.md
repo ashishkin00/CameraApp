@@ -4,3 +4,4 @@
 # torch while recording
 # restrict access to ui features
 # alert for denied lib access req
+# remove permission request on start

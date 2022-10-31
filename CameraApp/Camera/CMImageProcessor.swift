@@ -50,6 +50,7 @@ extension CameraManager: AVCapturePhotoCaptureDelegate, AVCaptureFileOutputRecor
     
     @objc func toggleRecord() {
         videoOutput.isRecording ? stopRecording() : startRecording()
+        uiDelegate?.hideUI(isRecording: videoOutput.isRecording)
     }
     
     func startRecording() {

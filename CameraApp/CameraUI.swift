@@ -4,9 +4,22 @@ import PhotosUI
 
 protocol CameraUIDelegate: AnyObject {
     func changeFlashIcon(flashMode: FlashModes)
+    func hideUI(isRecording: Bool)
 }
 
 class CameraUI: UIView, CameraUIDelegate {
+    func hideUI(isRecording: Bool) {
+        if isRecording {
+            cameraSwitcherButton.isHidden = false
+            moduleSwitchButton.isHidden = false
+            recordInformation.isHidden = true
+        } else {
+            cameraSwitcherButton.isHidden = true
+            moduleSwitchButton.isHidden = true
+            recordInformation.isHidden = false
+        }
+    }
+    
     let flashButton: UIButton = {
         let button = UIButton(frame: .zero)
         button.tintColor = .white
@@ -67,6 +80,32 @@ class CameraUI: UIView, CameraUIDelegate {
         return imageView
     }()
     
+    let recordInformation: UIView = {
+        let view = UIView(frame: .zero)
+        let imageView = UIImageView(frame: .zero)
+        imageView.image = UIImage(systemName: "largecircle.fill.circle")
+        imageView.tintColor = .red
+        let label = UILabel(frame: .zero)
+        label.text = "REC"
+        label.textColor = .white
+        label.shadowOffset = CGSize(width: 1, height: 1)
+        label.shadowColor = .black
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        label.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(imageView)
+        view.addSubview(label)
+        NSLayoutConstraint.activate([
+            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            imageView.heightAnchor.constraint(equalToConstant: 25),
+            imageView.widthAnchor.constraint(equalToConstant: 25),
+            label.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
+            label.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 5),
+            ])
+        view.isHidden = true
+        return view
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -94,6 +133,9 @@ class CameraUI: UIView, CameraUIDelegate {
         
         addSubview(recordButton)
         recordButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubview(recordInformation)
+        recordInformation.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             shutterButton.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
@@ -125,6 +167,10 @@ class CameraUI: UIView, CameraUIDelegate {
             recordButton.leadingAnchor.constraint(equalTo: shutterButton.trailingAnchor),
             recordButton.heightAnchor.constraint(equalToConstant: 50),
             recordButton.widthAnchor.constraint(equalToConstant: 50),
+            
+            recordInformation.centerYAnchor.constraint(equalTo: shutterButton.centerYAnchor),
+            recordInformation.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            recordInformation.trailingAnchor.constraint(equalTo: shutterButton.leadingAnchor),
         ])
     }
     

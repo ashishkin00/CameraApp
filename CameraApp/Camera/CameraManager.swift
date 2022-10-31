@@ -7,16 +7,20 @@ class CameraManager: NSObject {
     let session = AVCaptureSession()
     let photoOutput = AVCapturePhotoOutput()
     let videoOutput = AVCaptureMovieFileOutput()
+    
     var currentFrontInput: AVCaptureDeviceInput!
     var currentBackInput: AVCaptureDeviceInput!
     var currentMic: AVCaptureDeviceInput!
     lazy var frontInputs: [AVCaptureDeviceInput] = []
     lazy var backInputs: [AVCaptureDeviceInput] = []
     lazy var mic: [AVCaptureDeviceInput] = []
+    
     lazy var previewLayer: AVCaptureVideoPreviewLayer = AVCaptureVideoPreviewLayer()
     lazy var zoomFactor: CGFloat = 1
+    
     lazy var position: CameraPosition = .back
     lazy var flashMode: FlashModes = .auto
+    
     weak var vcDelegate: ViewControllerDelegate?
     weak var uiDelegate: CameraUIDelegate?
     

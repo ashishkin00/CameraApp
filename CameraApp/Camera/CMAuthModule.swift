@@ -20,4 +20,14 @@ extension CameraManager {
             }
         }
     }
+    
+    func requestAudioAccess(_ completionHandler: @escaping (Bool) -> ()) {
+        AVCaptureDevice.requestAccess(for: .audio) { granted in
+            if granted {
+                completionHandler(true)
+            } else {
+                completionHandler(false)
+            }
+        }
+    }
 }

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -36,6 +36,7 @@
 		995EFAF9290A785100DFAE11 /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		995EFAFD290AA1E200DFAE11 /* CMAuthModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CMAuthModule.swift; sourceTree = "<group>"; };
 		995EFB00290ABB9A00DFAE11 /* CMImageProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CMImageProcessor.swift; sourceTree = "<group>"; };
+		9994FEDB290FBAE400109AB2 /* Todo.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Todo.md; sourceTree = "<group>"; };
 		999CD1A2290C05E3006F5FC9 /* ViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerDelegate.swift; sourceTree = "<group>"; };
 		999CD1A4290C1ADF006F5FC9 /* CMFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CMFeatures.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -80,6 +81,7 @@
 				994894312907F92900587909 /* Assets.xcassets */,
 				994894332907F92900587909 /* LaunchScreen.storyboard */,
 				994894362907F92900587909 /* Info.plist */,
+				9994FEDB290FBAE400109AB2 /* Todo.md */,
 			);
 			path = CameraApp;
 			sourceTree = "<group>";
@@ -332,8 +334,9 @@
 				DEVELOPMENT_TEAM = 84UU59T6MY;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CameraApp/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = asd;
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = asd;
+				INFOPLIST_KEY_NSCameraUsageDescription = "дай пж";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "дай пж";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "дай пж";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -363,8 +366,9 @@
 				DEVELOPMENT_TEAM = 84UU59T6MY;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CameraApp/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = asd;
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = asd;
+				INFOPLIST_KEY_NSCameraUsageDescription = "дай пж";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "дай пж";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "дай пж";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

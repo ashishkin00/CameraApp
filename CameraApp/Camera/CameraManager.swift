@@ -9,8 +9,10 @@ class CameraManager: NSObject {
     let videoOutput = AVCaptureMovieFileOutput()
     var currentFrontInput: AVCaptureDeviceInput!
     var currentBackInput: AVCaptureDeviceInput!
+    var currentMic: AVCaptureDeviceInput!
     lazy var frontInputs: [AVCaptureDeviceInput] = []
     lazy var backInputs: [AVCaptureDeviceInput] = []
+    lazy var mic: [AVCaptureDeviceInput] = []
     lazy var previewLayer: AVCaptureVideoPreviewLayer = AVCaptureVideoPreviewLayer()
     lazy var zoomFactor: CGFloat = 1
     lazy var position: CameraPosition = .back
@@ -44,7 +46,22 @@ class CameraManager: NSObject {
     func setupCameraModules() {
         let backModules = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera, .builtInDualCamera, .builtInDualWideCamera, .builtInTripleCamera], mediaType: .video, position: .back)
         let frontModules = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera, .builtInDualCamera, .builtInDualWideCamera, .builtInTripleCamera], mediaType: .video, position: .front)
+        
+        guard let microphone = AVCaptureDevice.default(for: .audio) else {
+            print("no mic")
+            return
+        }
         session.beginConfiguration()
+        do {
+            let input = try AVCaptureDeviceInput(device: microphone)
+            if session.canAddInput(input) {
+                currentMic = input
+            }
+        } catch {
+            print("uh-oh")
+        }
+        
+        
         for module in frontModules.devices {
             do {
                 let input = try AVCaptureDeviceInput(device: module)
@@ -69,6 +86,7 @@ class CameraManager: NSObject {
         currentFrontInput = frontInputs.first
         currentBackInput = backInputs.first
         session.addInput(currentBackInput)
+        session.addInput(currentMic)
         if session.canAddOutput(photoOutput) {
             session.addOutput(photoOutput)
         }
@@ -78,6 +96,7 @@ class CameraManager: NSObject {
         previewLayer = AVCaptureVideoPreviewLayer(session: session)
         session.commitConfiguration()
         session.startRunning()
+        print("sdasdasd")
         vcDelegate?.cameraDidFinishSetup()
     }
 }

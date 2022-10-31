@@ -4,13 +4,31 @@ import Photos
 import PhotosUI
 
 extension CameraManager: AVCapturePhotoCaptureDelegate, AVCaptureFileOutputRecordingDelegate {
+    func fileOutput(_ output: AVCaptureFileOutput, didStartRecordingTo fileURL: URL, from connections: [AVCaptureConnection]) {
+        print("didStartRecordingTo \(fileURL)")
+    }
+    
     func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
-        print("asd")
         if error == nil {
-            print(output)
-            //do something
+            print("didFinishRecordingTo \(outputFileURL)")
+            requestLibraryAccess { granted in
+                if granted {
+                    do {
+                        try PHPhotoLibrary.shared().performChangesAndWait {
+                            PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: outputFileURL)
+                            print("video has saved in library...")
+                        }
+                    } catch let error {
+                        print("failed to save photo in library: ", error)
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        self.vcDelegate?.showAlert(title: "Unable to save video", msg: "Please provide access to the gallery in the device settings and try again", actions: [UIAlertAction(title: "OK", style: .cancel)])
+                    }
+                }
+            }
         } else {
-            //do something
+            print("didFinishRecordingTo error")
         }
     }
     
@@ -30,8 +48,11 @@ extension CameraManager: AVCapturePhotoCaptureDelegate, AVCaptureFileOutputRecor
         }
     }
     
-    @objc func recordVideo() {
-        print("recording")
+    @objc func toggleRecord() {
+        videoOutput.isRecording ? stopRecording() : startRecording()
+    }
+    
+    func startRecording() {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let fileUrl = paths[0].appendingPathComponent("output.mp4")
         try? FileManager.default.removeItem(at: fileUrl)
@@ -39,9 +60,6 @@ extension CameraManager: AVCapturePhotoCaptureDelegate, AVCaptureFileOutputRecor
     }
     
     func stopRecording() {
-        if !session.isRunning {
-            return
-        }
         videoOutput.stopRecording()
     }
     

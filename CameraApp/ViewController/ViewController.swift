@@ -73,8 +73,8 @@ class ViewController: UIViewController {
         ui.flashButton.addTarget(camera, action: #selector(camera.setNextFlashMode), for: .touchUpInside)
         ui.flashButton.setBackgroundImage(UIImage(systemName: camera.flashMode.rawValue), for: .normal)
         
-        ui.isUserInteractionEnabled = true
-        ui.recordButton.addTarget(camera, action: #selector(camera.recordVideo), for: .touchUpInside)
+        ui.recordButton.isUserInteractionEnabled = true
+        ui.recordButton.addTarget(camera, action: #selector(camera.toggleRecord), for: .touchUpInside)
         
     }
 }

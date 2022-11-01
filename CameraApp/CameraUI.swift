@@ -20,6 +20,16 @@ class CameraUI: UIView, CameraUIDelegate {
         }
     }
     
+    let stackView: UIStackView = {
+        let stackView = UIStackView(frame: .zero)
+        stackView.axis  = .vertical
+        stackView.distribution  = .equalSpacing
+        stackView.alignment = .firstBaseline
+        stackView.backgroundColor = .green
+        stackView.spacing   = 16.0
+        return stackView
+    }()
+    
     let flashButton: UIButton = {
         let button = UIButton(frame: .zero)
         button.tintColor = .white
@@ -116,6 +126,9 @@ class CameraUI: UIView, CameraUIDelegate {
     }
     
     func setup() {
+        addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
         addSubview(flashButton)
         flashButton.translatesAutoresizingMaskIntoConstraints = false
         
@@ -171,6 +184,11 @@ class CameraUI: UIView, CameraUIDelegate {
             recordInformation.centerYAnchor.constraint(equalTo: shutterButton.centerYAnchor),
             recordInformation.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
             recordInformation.trailingAnchor.constraint(equalTo: shutterButton.leadingAnchor),
+            
+            stackView.centerYAnchor.constraint(equalTo: layoutMarginsGuide.centerYAnchor),
+            stackView.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor),
+            //stackView.widthAnchor.constraint(equalToConstant: 200),
+            //stackView.heightAnchor.constraint(equalToConstant: 200),
         ])
     }
     

@@ -75,7 +75,6 @@ class ViewController: UIViewController {
         
         ui.recordButton.isUserInteractionEnabled = true
         ui.recordButton.addTarget(camera, action: #selector(camera.toggleRecord), for: .touchUpInside)
-        
     }
 }
 

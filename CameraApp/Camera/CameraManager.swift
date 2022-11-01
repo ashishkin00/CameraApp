@@ -8,14 +8,13 @@ class CameraManager: NSObject {
     let photoOutput = AVCapturePhotoOutput()
     let videoOutput = AVCaptureMovieFileOutput()
     
-    var currentFrontInput: AVCaptureDeviceInput!
-    var currentBackInput: AVCaptureDeviceInput!
-    var currentMic: AVCaptureDeviceInput!
+    var currentCameraDevice: AVCaptureDeviceInput!
+    var currentMicrophone: AVCaptureDeviceInput!
     lazy var frontInputs: [AVCaptureDeviceInput] = []
     lazy var backInputs: [AVCaptureDeviceInput] = []
     lazy var mic: [AVCaptureDeviceInput] = []
     
-    lazy var previewLayer: AVCaptureVideoPreviewLayer = AVCaptureVideoPreviewLayer()
+    lazy var previewLayer = AVCaptureVideoPreviewLayer()
     lazy var zoomFactor: CGFloat = 1
     
     lazy var position: CameraPosition = .back
@@ -25,82 +24,66 @@ class CameraManager: NSObject {
     weak var uiDelegate: CameraUIDelegate?
     
     func start() {
-        requestCaptureAccess { [self] granted in
-            if granted {
-                DispatchQueue.main.async {
-                    self.setupCameraModules()
-                }
-            } else {
-                DispatchQueue.main.async {
-                    self.vcDelegate?.showAlert(title: "Can't access camera", msg: "Please provide access to the camera in your device settings", actions: [UIAlertAction(title: "OK", style: .default, handler: { _ in
-                        exit(0)
-                    })])
-                }
-            }
+        DispatchQueue.main.async {
+            self.setupDevices()
         }
-        requestLibraryAccess { granted in
-            if granted {
-                DispatchQueue.main.async {
-                    self.vcDelegate?.refreshPreviewImage()
+    }
+    
+    func addCaptureDeviceInputs(devices: AVCaptureDevice.DiscoverySession) {
+        for device in devices.devices {
+            do {
+                let input = try AVCaptureDeviceInput(device: device)
+                switch input.device.position {
+                    case .unspecified:
+                        currentMicrophone = input
+                    case .back:
+                        backInputs.append(input)
+                    case .front:
+                        frontInputs.append(input)
+                    @unknown default:
+                        break
                 }
+            } catch let error {
+                print("Unable to fetch capture device input: \(error)")
             }
         }
     }
     
-    func setupCameraModules() {
-        let backModules = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera, .builtInDualCamera, .builtInDualWideCamera, .builtInTripleCamera], mediaType: .video, position: .back)
-        let frontModules = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera, .builtInDualCamera, .builtInDualWideCamera, .builtInTripleCamera], mediaType: .video, position: .front)
-        
-        guard let microphone = AVCaptureDevice.default(for: .audio) else {
-            print("no mic")
-            return
+    func addCaptureOutput(outputs: [AVCaptureOutput]) {
+        for output in outputs {
+            if session.canAddOutput(output) {
+                session.addOutput(output)
+            }
         }
+    }
+    
+    func defineDefaultInputs() {
+        switch position {
+            case .front:
+                if frontInputs.count != 0 {
+                    currentCameraDevice = frontInputs.first
+                }
+            case .back:
+                if backInputs.count != 0 {
+                    currentCameraDevice = backInputs.first
+                }
+        }
+        if session.canAddInput(currentCameraDevice) {
+            session.addInput(currentCameraDevice)
+        } else {
+            print("Unable to add capture device input")
+        }
+    }
+    
+    func setupDevices() {
         session.beginConfiguration()
-        do {
-            let input = try AVCaptureDeviceInput(device: microphone)
-            if session.canAddInput(input) {
-                currentMic = input
-            }
-        } catch {
-            print("uh-oh")
-        }
-        
-        
-        for module in frontModules.devices {
-            do {
-                let input = try AVCaptureDeviceInput(device: module)
-                if session.canAddInput(input) {
-                    frontInputs.append(input)
-                }
-            } catch {
-                print("uh-oh")
-            }
-        }
-        for module in backModules.devices {
-            do {
-                let input = try AVCaptureDeviceInput(device: module)
-                if session.canAddInput(input) {
-                    backInputs.append(input)
-                    
-                }
-            } catch {
-                print("uh-oh")
-            }
-        }
-        currentFrontInput = frontInputs.first
-        currentBackInput = backInputs.first
-        session.addInput(currentBackInput)
-        session.addInput(currentMic)
-        if session.canAddOutput(photoOutput) {
-            session.addOutput(photoOutput)
-        }
-        if session.canAddOutput(videoOutput) {
-            session.addOutput(videoOutput)
-        }
+        let devices = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInMicrophone, .builtInWideAngleCamera, .builtInDualCamera, .builtInDualWideCamera, .builtInTripleCamera], mediaType: .video, position: .unspecified)
+        addCaptureDeviceInputs(devices: devices)
+        defineDefaultInputs()
+        addCaptureOutput(outputs: [photoOutput, videoOutput])
         previewLayer = AVCaptureVideoPreviewLayer(session: session)
         session.commitConfiguration()
         session.startRunning()
-        print("sdasdasd")
         vcDelegate?.cameraDidFinishSetup()
     }
 }

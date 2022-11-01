@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -20,6 +20,7 @@
 		995EFB01290ABB9A00DFAE11 /* CMImageProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995EFB00290ABB9A00DFAE11 /* CMImageProcessor.swift */; };
 		999CD1A3290C05E3006F5FC9 /* ViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999CD1A2290C05E3006F5FC9 /* ViewControllerDelegate.swift */; };
 		999CD1A5290C1ADF006F5FC9 /* CMFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999CD1A4290C1ADF006F5FC9 /* CMFeatures.swift */; };
+		99ACB06F2911166000834C68 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99ACB06E2911166000834C68 /* ListViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 		9994FEDB290FBAE400109AB2 /* Todo.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Todo.md; sourceTree = "<group>"; };
 		999CD1A2290C05E3006F5FC9 /* ViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerDelegate.swift; sourceTree = "<group>"; };
 		999CD1A4290C1ADF006F5FC9 /* CMFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CMFeatures.swift; sourceTree = "<group>"; };
+		99ACB06E2911166000834C68 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +57,7 @@
 		9948941C2907F92900587909 = {
 			isa = PBXGroup;
 			children = (
+				99ACB06E2911166000834C68 /* ListViewController.swift */,
 				994894272907F92900587909 /* CameraApp */,
 				994894262907F92900587909 /* Products */,
 			);
@@ -181,6 +184,7 @@
 				992CD28D290950A50015CAF4 /* CameraUI.swift in Sources */,
 				995EFB01290ABB9A00DFAE11 /* CMImageProcessor.swift in Sources */,
 				9948942B2907F92900587909 /* SceneDelegate.swift in Sources */,
+				99ACB06F2911166000834C68 /* ListViewController.swift in Sources */,
 				992CD28F290950E30015CAF4 /* Misc.swift in Sources */,
 				995EFAFA290A785100DFAE11 /* CameraManager.swift in Sources */,
 				995EFAFE290AA1E200DFAE11 /* CMAuthModule.swift in Sources */,

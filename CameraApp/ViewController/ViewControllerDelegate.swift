@@ -17,7 +17,9 @@ extension ViewController: ViewControllerDelegate {
     }
     
     func cameraDidFinishSetup() {
-        setup()
+        DispatchQueue.main.async {
+            self.setup()
+        }
     }
     
     func cameraDidSavePhoto(image: UIImage) {

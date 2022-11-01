@@ -30,35 +30,35 @@ extension CameraManager {
     }
     
     @objc func switchCameraModule() {
-        session.beginConfiguration()
-        switch position {
-            case .front:
-                if frontInputs.count > 1 {
-                    session.removeInput(currentFrontInput)
-                    currentFrontInput = frontInputs.nextItem(after: currentFrontInput)
-                    session.addInput(currentFrontInput)
-                }
-            case .back:
-                if backInputs.count > 1 {
-                    session.removeInput(currentBackInput)
-                    currentBackInput = backInputs.nextItem(after: currentBackInput)
-                    session.addInput(currentBackInput)
-                }
-        }
-        session.commitConfiguration()
+//        session.beginConfiguration()
+//        switch position {
+//            case .front:
+//                if frontInputs.count > 1 {
+//                    session.removeInput(currentFrontInput)
+//                    currentFrontInput = frontInputs.nextItem(after: currentFrontInput)
+//                    session.addInput(currentFrontInput)
+//                }
+//            case .back:
+//                if backInputs.count > 1 {
+//                    session.removeInput(currentBackInput)
+//                    currentBackInput = backInputs.nextItem(after: currentBackInput)
+//                    session.addInput(currentBackInput)
+//                }
+//        }
+//        session.commitConfiguration()
     }
     
     @objc func switchCameraPosition() {
-        position = position.next()
-        session.beginConfiguration()
-        switch position {
-            case .front:
-                session.removeInput(currentBackInput)
-                session.addInput(currentFrontInput)
-            case .back:
-                session.removeInput(currentFrontInput)
-                session.addInput(currentBackInput)
-        }
-        session.commitConfiguration()
+//        position = position.next()
+//        session.beginConfiguration()
+//        switch position {
+//            case .front:
+//                session.removeInput(currentBackInput)
+//                session.addInput(currentFrontInput)
+//            case .back:
+//                session.removeInput(currentFrontInput)
+//                session.addInput(currentBackInput)
+//        }
+//        session.commitConfiguration()
     }
 }

@@ -12,21 +12,15 @@ class CameraManager: NSObject {
     var currentMicrophone: AVCaptureDeviceInput!
     lazy var frontInputs: [AVCaptureDeviceInput] = []
     lazy var backInputs: [AVCaptureDeviceInput] = []
-    lazy var mic: [AVCaptureDeviceInput] = []
     
     lazy var previewLayer = AVCaptureVideoPreviewLayer()
     lazy var zoomFactor: CGFloat = 1
     
-    lazy var position: CameraPosition = .back
-    lazy var flashMode: FlashModes = .auto
+    lazy var position: AVCaptureDevice.Position = .back
+    lazy var flashMode: AVCaptureDevice.FlashMode = .auto
     
-    weak var vcDelegate: ViewControllerDelegate?
-    weak var uiDelegate: CameraUIDelegate?
-    
-    func start() {
-        DispatchQueue.main.async {
-            self.setupDevices()
-        }
+    func setup() {
+        setupDevices()
     }
     
     func addCaptureDeviceInputs(devices: AVCaptureDevice.DiscoverySession) {
@@ -67,6 +61,10 @@ class CameraManager: NSObject {
                 if backInputs.count != 0 {
                     currentCameraDevice = backInputs.first
                 }
+            case .unspecified:
+                break
+            @unknown default:
+                break
         }
         if session.canAddInput(currentCameraDevice) {
             session.addInput(currentCameraDevice)
@@ -81,9 +79,8 @@ class CameraManager: NSObject {
         addCaptureDeviceInputs(devices: devices)
         defineDefaultInputs()
         addCaptureOutput(outputs: [photoOutput, videoOutput])
-        previewLayer = AVCaptureVideoPreviewLayer(session: session)
+        session.sessionPreset = .photo
         session.commitConfiguration()
         session.startRunning()
-        vcDelegate?.cameraDidFinishSetup()
     }
 }

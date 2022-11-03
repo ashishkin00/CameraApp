@@ -52,15 +52,3 @@ extension Comparable {
         return r
     }
 }
-
-enum CameraPosition: CaseIterable {
-    case front, back
-}
-
-enum CameraModule: CaseIterable {
-    case wideAngleCamera, some
-}
-
-enum FlashModes: String, CaseIterable {
-    case auto = "bolt.badge.a.fill", on = "bolt.fill", off = "bolt.slash.fill"
-}

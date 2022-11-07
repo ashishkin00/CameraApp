@@ -23,7 +23,9 @@ extension CameraManager: AVCaptureFileOutputRecordingDelegate {
             print("didFinishRecordingTo \(error))")
         }
     }
+    
     @objc func recordVideo() {
+        UIDelegate?.updatePhotoButton(isRecording: videoOutput.isRecording)
         if videoOutput.isRecording {
             videoOutput.stopRecording()
         } else {

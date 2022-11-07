@@ -18,9 +18,12 @@ class CameraManager: NSObject {
     
     lazy var position: AVCaptureDevice.Position = .back
     lazy var flashMode: AVCaptureDevice.FlashMode = .auto
+    var UIDelegate: CameraUIDelegate?
     
     func setup() {
         setupDevices()
+        print(frontInputs)
+        print(backInputs)
     }
     
     func addCaptureDeviceInputs(devices: AVCaptureDevice.DiscoverySession) {

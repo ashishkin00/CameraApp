@@ -4,8 +4,6 @@ import Photos
 import PhotosUI
 
 extension CameraManager: AVCapturePhotoCaptureDelegate {
-
-    
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         guard let imageData = photo.fileDataRepresentation() else { return }
         if let image = UIImage(data: imageData) {
@@ -34,6 +32,11 @@ extension CameraManager: AVCapturePhotoCaptureDelegate {
                         try PHPhotoLibrary.shared().performChangesAndWait {
                             PHAssetChangeRequest.creationRequestForAsset(from: processedImage)
                             print("photo has saved in library...")
+                            DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.2) {
+                                print("change image")
+                                self.UIDelegate?.updatePreviewImage()
+                            }
+                            
                         }
                     } catch let error {
                         print("failed to save photo in library: ", error)
@@ -44,12 +47,29 @@ extension CameraManager: AVCapturePhotoCaptureDelegate {
         }
     }
     
+    func isFlashAvailable() -> AVCaptureDevice.FlashMode? {
+        for mode in photoOutput.supportedFlashModes {
+            if flashMode == mode {
+                return flashMode
+            }
+        }
+        return nil
+    }
+    
     @objc func takePhoto() {
-        let photoSettings = AVCapturePhotoSettings()
-        photoSettings.flashMode = flashMode
-        if let photoPreviewType = photoSettings.availablePreviewPhotoPixelFormatTypes.first {
-            photoSettings.previewPhotoFormat = [kCVPixelBufferPixelFormatTypeKey as String: photoPreviewType]
-            photoOutput.capturePhoto(with: photoSettings, delegate: self)
+        requestCaptureAccess { granted in
+            if granted {
+                let photoSettings = AVCapturePhotoSettings()
+                if let flashMode = self.isFlashAvailable() {
+                    photoSettings.flashMode = flashMode
+                } else {
+                    photoSettings.flashMode = .off
+                }
+                if let photoPreviewType = photoSettings.availablePreviewPhotoPixelFormatTypes.first {
+                    photoSettings.previewPhotoFormat = [kCVPixelBufferPixelFormatTypeKey as String: photoPreviewType]
+                    self.photoOutput.capturePhoto(with: photoSettings, delegate: self)
+                }
+            }
         }
     }
 }

@@ -20,6 +20,9 @@
 		99861679291297FD004805C8 /* CUIExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99861678291297FD004805C8 /* CUIExtras.swift */; };
 		9986167B2912A324004805C8 /* CMPhotoCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9986167A2912A324004805C8 /* CMPhotoCapture.swift */; };
 		9986167D2912A38A004805C8 /* CMVideoCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9986167C2912A38A004805C8 /* CMVideoCapture.swift */; };
+		999775E5291B83420081CD17 /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999775E3291B83410081CD17 /* GalleryViewController.swift */; };
+		999775E6291B83420081CD17 /* GalleryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999775E4291B83420081CD17 /* GalleryCollectionViewCell.swift */; };
+		999775E9291B83E00081CD17 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 999775E8291B83E00081CD17 /* SnapKit */; };
 		999CD1A5290C1ADF006F5FC9 /* CMFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999CD1A4290C1ADF006F5FC9 /* CMFeatures.swift */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +43,8 @@
 		9986167A2912A324004805C8 /* CMPhotoCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CMPhotoCapture.swift; sourceTree = "<group>"; };
 		9986167C2912A38A004805C8 /* CMVideoCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CMVideoCapture.swift; sourceTree = "<group>"; };
 		9994FEDB290FBAE400109AB2 /* Todo.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Todo.md; sourceTree = "<group>"; };
+		999775E3291B83410081CD17 /* GalleryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
+		999775E4291B83420081CD17 /* GalleryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryCollectionViewCell.swift; sourceTree = "<group>"; };
 		999CD1A4290C1ADF006F5FC9 /* CMFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CMFeatures.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -48,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				999775E9291B83E00081CD17 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,6 +81,7 @@
 			children = (
 				994894282907F92900587909 /* AppDelegate.swift */,
 				9948942A2907F92900587909 /* SceneDelegate.swift */,
+				99B10C5F2918EEB20070C3F9 /* GalleryUI */,
 				995EFAFF290AA2F500DFAE11 /* Camera */,
 				999CD1A1290C05CC006F5FC9 /* ViewController */,
 				9986167529128A09004805C8 /* CameraUI */,
@@ -117,6 +124,15 @@
 			path = ViewController;
 			sourceTree = "<group>";
 		};
+		99B10C5F2918EEB20070C3F9 /* GalleryUI */ = {
+			isa = PBXGroup;
+			children = (
+				999775E4291B83420081CD17 /* GalleryCollectionViewCell.swift */,
+				999775E3291B83410081CD17 /* GalleryViewController.swift */,
+			);
+			path = GalleryUI;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -133,6 +149,9 @@
 			dependencies = (
 			);
 			name = CameraApp;
+			packageProductDependencies = (
+				999775E8291B83E00081CD17 /* SnapKit */,
+			);
 			productName = CameraApp;
 			productReference = 994894252907F92900587909 /* CameraApp.app */;
 			productType = "com.apple.product-type.application";
@@ -160,6 +179,9 @@
 				Base,
 			);
 			mainGroup = 9948941C2907F92900587909;
+			packageReferences = (
+				999775E7291B83E00081CD17 /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			productRefGroup = 994894262907F92900587909 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -196,7 +218,9 @@
 				9948942B2907F92900587909 /* SceneDelegate.swift in Sources */,
 				992CD28F290950E30015CAF4 /* Misc.swift in Sources */,
 				995EFAFA290A785100DFAE11 /* CameraManager.swift in Sources */,
+				999775E5291B83420081CD17 /* GalleryViewController.swift in Sources */,
 				995EFAFE290AA1E200DFAE11 /* CMAuth.swift in Sources */,
+				999775E6291B83420081CD17 /* GalleryCollectionViewCell.swift in Sources */,
 				999CD1A5290C1ADF006F5FC9 /* CMFeatures.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -340,12 +364,17 @@
 		9948943A2907F92900587909 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 84UU59T6MY;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CameraApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CameraApp;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
 				INFOPLIST_KEY_NSCameraUsageDescription = "дай пж";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "дай пж";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "дай пж";
@@ -360,9 +389,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dunice.CameraApp;
+				MARKETING_VERSION = 2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dunice.cameraApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -372,12 +402,17 @@
 		9948943B2907F92900587909 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 84UU59T6MY;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CameraApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CameraApp;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
 				INFOPLIST_KEY_NSCameraUsageDescription = "дай пж";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "дай пж";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "дай пж";
@@ -392,9 +427,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dunice.CameraApp;
+				MARKETING_VERSION = 2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dunice.cameraApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -423,6 +459,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		999775E7291B83E00081CD17 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		999775E8291B83E00081CD17 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 999775E7291B83E00081CD17 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9948941D2907F92900587909 /* Project object */;
 }

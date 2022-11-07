@@ -32,19 +32,25 @@ extension CameraUI {
         }
     }
     
-//    func fetchLastPhotoFromGallery() {
-//        let fetchOptions = PHFetchOptions()
-//        fetchOptions.fetchLimit = 1
-//        fetchOptions.sortDescriptors = [NSSortDescriptor(key:"creationDate", ascending: false)]
-//        let fetchResult: PHFetchResult = PHAsset.fetchAssets(with: .image, options: fetchOptions)
-//        if fetchResult.count > 0 {
-//            let requestOptions = PHImageRequestOptions()
-//            requestOptions.isSynchronous = true
-//            PHImageManager.default().requestImage(for: fetchResult.firstObject! as PHAsset, targetSize: CGSize(width: 256, height: 256), contentMode: PHImageContentMode.aspectFill, options: requestOptions, resultHandler: { (image, _) in
-//                if let image = image {
-//                    // set new image
-//                }
-//            })
-//        }
-//    }
+    func updatePreviewImage() {
+        fetchLastPhotoFromGallery()
+    }
+    
+    func fetchLastPhotoFromGallery() {
+        let fetchOptions = PHFetchOptions()
+        fetchOptions.fetchLimit = 1
+        fetchOptions.sortDescriptors = [NSSortDescriptor(key:"creationDate", ascending: false)]
+        let fetchResult: PHFetchResult = PHAsset.fetchAssets(with: .image, options: fetchOptions)
+        if fetchResult.count > 0 {
+            let requestOptions = PHImageRequestOptions()
+            requestOptions.isSynchronous = true
+            PHImageManager.default().requestImage(for: fetchResult.firstObject! as PHAsset, targetSize: CGSize(width: 256, height: 256), contentMode: PHImageContentMode.aspectFill, options: requestOptions, resultHandler: { (image, info) in
+                if let image = image {
+                    DispatchQueue.main.async {
+                        self.previewImage.setImage(image, for: .normal)
+                    }
+                }
+            })
+        }
+    }
 }
